@@ -4,61 +4,29 @@ import ImgGroup from "./ui/Search/ImgGroup";
 import SearchTop from "./ui/Search/SearchTop";
 
 const RandomSearch = () => {
-  
-  const { infoCount, infoRandom, GetCardInfo, GetInfoCount, ClearCardInfo } =
-    useContext(CardContext);
+  const { infoRandom, GetCardInfo, ClearCardInfo } = useContext(CardContext);
 
-  const [randomArr, setRandomArr] = useState([0]);
   const [count, setCount] = useState(0);
-
-  let randomIdx = () => {
-    let rnd = Math.floor(Math.random() * infoCount);
-
-    if (randomArr.includes(rnd) ) {
-      return null;
-    }
-
-    setRandomArr([...randomArr, rnd]);
-    return rnd;
-  };
-
 
   const prevRandom = () => {
     setCount((count) => --count);
   };
 
   const nextRandom = () => {
-    if (randomArr[count + 1]) {
-      setCount((count) => ++count);
-      
-    
-    } else {
-
-      let rnd = randomIdx();
-      
-      if(rnd == null){
-        nextRandom();
-        return;
-      }
-      setCount((count) => ++count);
-      
-    }
+    setCount((count) => ++count);
   };
 
-  useEffect(()=> {
-    if(infoRandom) {
-      GetCardInfo(randomArr[count])
+  useEffect(() => {
+    if (count > randomArr.length) {
+      GetCardInfo();
     }
-  }, [count])
+  }, [count]);
 
   const startRandomSearch = () => {
-    GetInfoCount();
-    randomIdx();
-    GetCardInfo(randomArr[count]);  
+    GetCardInfo();
   };
 
   const endRandomSearch = () => {
-    setRandomArr([0]);
     setCount(0);
     ClearCardInfo();
   };
@@ -85,7 +53,7 @@ const RandomSearch = () => {
         </button>
         <button
           onClick={() => nextRandom()}
-          disabled={infoRandom == null || count === infoCount - 1}
+          disabled={infoRandom === null}
           className="btn next-button my-3 mx-3"
         >
           Proximo

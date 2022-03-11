@@ -1,10 +1,10 @@
 const ImgGroup = ({ info }) => {
-  const { itemname, path } = info;
+  const { Account, Images } = info;
 
   return (
     <div className="img-group">
-      <img src={path ? path : ""} alt={itemname} />
-      <img src={path ? path : ""} alt={itemname} />
+      <img src={Images ? Images[0] : ""} alt="Front" />
+      <img src={Images ? Images[1] : ""} alt="Back" />
     </div>
   );
 };

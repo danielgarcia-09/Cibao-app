@@ -14,9 +14,9 @@ const CardState = (props) => {
 
   // Funcs
 
-  const GetCardInfo = async (id) => {
+  const GetCardInfo = async () => {
     try {
-      const result = await AxiosClient.get(`Cibao/${id}`);
+      const result = await AxiosClient.get(`Cibao`);
       dispatch({
         type: "GET_INFO",
         payload: result.data,
@@ -25,19 +25,6 @@ const CardState = (props) => {
       console.log(error);
     }
   };
-
-  const GetInfoCount = async () => {
-    try {
-      const result = await AxiosClient.get("Cibao");
-
-      dispatch({
-        type: "GET_COUNT",
-        payload: result.data
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }
 
   const GetInfoByCedula = async(id) => {
     try {
@@ -69,7 +56,6 @@ const CardState = (props) => {
   return (
     <CardContext.Provider
       value={{
-        infoCount: state.infoCount,
         infoRandom: state.infoRandom,
         infoByCedula: state.infoByCedula,
         GetCardInfo,

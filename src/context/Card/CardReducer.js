@@ -3,14 +3,8 @@ const CardReducer = (state, action) => {
         case 'GET_INFO':
                 return {
                     ...state,
-                    infoRandom: action.payload
+                    infoRandom: [...state.infoRandom, action.payload]
                 };
-        case 'GET_COUNT':
-                return {
-                    ...state,
-                    infoCount: action.payload
-                }
-
         case "GET_INFO_BY_CEDULA":
                 return {
                     ...state,
@@ -25,7 +19,6 @@ const CardReducer = (state, action) => {
         case 'CLEAR_INFO':
                 return {
                     ...state,
-                    infoCount: null,
                     infoRandom: null
                 }
         default:
