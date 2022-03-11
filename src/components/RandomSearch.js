@@ -17,7 +17,7 @@ const RandomSearch = () => {
   };
 
   useEffect(() => {
-    if (count > randomArr.length) {
+    if (count >= randomArr.length) {
       GetCardInfo();
     }
   }, [count]);
