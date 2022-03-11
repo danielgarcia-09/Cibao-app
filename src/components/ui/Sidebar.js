@@ -15,13 +15,12 @@ import SideNav, {
 } from "@trendmicro/react-sidenav";
 
 import { Route, Routes, useNavigate } from "react-router-dom";
-import Start from "../Start";
 import Search from "../Search";
 import RandomSearch from "../RandomSearch";
 import AuthContext from "../../context/Auth/AuthContext";
 
 const Sidebar = () => {
-  const { user, SignUserOff } = useContext(AuthContext);
+  const { user, signOut } = useContext(AuthContext);
 
   const [mainStyle, setMainStyle] = useState({
     paddingLeft: "",
@@ -47,7 +46,7 @@ const Sidebar = () => {
 
   const logOut = () => {
     window.location.reload();
-    SignUserOff();
+    signOut();
   };
 
   return (
@@ -118,8 +117,6 @@ const Sidebar = () => {
       </SideNav>
       <main style={mainStyle}>
         <Routes>
-          <Route path="*" element={<Search />} />
-          <Route path="/" element={<Start />} />
           <Route path="/search" element={<Search />} />
           <Route path="/search/random" element={<RandomSearch />} />
         </Routes>

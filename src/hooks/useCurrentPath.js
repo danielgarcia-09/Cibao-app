@@ -3,6 +3,8 @@ import { matchRoutes, useLocation } from "react-router-dom";
 const routes = [
     { path: "*" },
     { path: "/" },
+    { path: "/login"},
+    { path: "/register"},
     { path: "/search" },
     { path: "/search/random" },
 ];

@@ -1,29 +1,44 @@
+import { useContext } from "react";
+import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import "./App.css";
+import Login from "./components/Auth/Login";
+import Register from "./components/Auth/Register";
 import Sidebar from "./components/ui/Sidebar";
-import CallForLoginOrHandleRedirect from "./config/azure-ad/settings";
-import { useContext, useEffect } from "react";
-import AxiosClient from "./config/axios";
+import TokenAuth from "./config/token";
 import AuthContext from "./context/Auth/AuthContext";
 
+const token = localStorage.getItem("token");
+if (token) TokenAuth(token);
+
+const ProtectedRoute = ({ isAllowed, redirectPath = "/", children }) => {
+  if (!isAllowed) {
+    return <Navigate to={redirectPath} replace />;
+  }
+
+  return children ? children : <Outlet />;
+};
+
 function App() {
-  const { GetUser } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
-  useEffect(() => {
-    (async function mounted() {
-      await CallForLoginOrHandleRedirect(onLoggedIn);
-    })();
-  }, []);
+  return (
+    <Routes>
+      <Route
+        path="*"
+        element={
+          <ProtectedRoute isAllowed={!!user} redirectPath={"/login"}>
+            <Sidebar />
+          </ProtectedRoute>
+        }
+      />
 
-  const onLoggedIn = async (tokenResponse) => {
-    GetUser(tokenResponse);
-    AxiosClient.defaults.headers.common[
-      "Authorization"
-    ] = `Bearer ${tokenResponse.accessToken}`;
-    localStorage.setItem("token", tokenResponse.accessToken);
-    localStorage.setItem("ha_id", tokenResponse.account.homeAccountId);
-    localStorage.setItem("ms_username", tokenResponse.account.username);
-  };
-  return <Sidebar />;
+      <Route element={<ProtectedRoute isAllowed={!user} />}>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Route>
+
+    </Routes>
+  );
 }
 
 export default App;
