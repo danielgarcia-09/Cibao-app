@@ -1,6 +1,5 @@
 const ImgGroup = ({ info }) => {
   const { itemname, path } = info;
-
   return (
     <div className="img-group">
       <img src={path ? path : ""} alt={itemname} />
